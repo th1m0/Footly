@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import Router from "next/router";
+import React, { useState } from "react";
 
 type Props = {
   poulName: string;
@@ -7,15 +7,10 @@ type Props = {
   setPoulName: (newPoulName: string) => void;
 };
 
-export default function ManageMatches({
-  poulName,
-  changeView,
-  setPoulName,
-}: Props) {
+export default function Root({ poulName, changeView, setPoulName }: Props) {
   return (
     <div>
-      <h1>Poul - Manage Matches</h1>
-
+      <h1>Poul</h1>
       <div>
         <input
           type="text"
@@ -25,7 +20,11 @@ export default function ManageMatches({
           onChange={(e) => setPoulName(e.target.value)}
           value={poulName}
         />
+        <button onClick={() => changeView("manageMatches")}>
+          Manage Matches
+        </button>
         <button onClick={() => changeView("manageUsers")}>Manage Users</button>
+        <button>Save</button>
       </div>
     </div>
   );

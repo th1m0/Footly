@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Router from "next/router";
+import DefaultEditScreen from "../../../components/poul/edit/Default";
+import ManageMatchesEditScreen from "../../../components/poul/edit/ManageMatches";
+import ManageUsersEditScreen from "../../../components/poul/edit/ManageUsers";
 
 type Props = {
   poulName: string;
@@ -7,27 +10,34 @@ type Props = {
 
 export default function Create({ poulName: _poulName }: Props) {
   const [poulName, setPoulName] = useState<string>(_poulName ?? "");
+  const [view, setView] = useState<string | null>(null);
 
-  return (
-    <div>
-      <h1>Poul</h1>
-      <div>
-        <input
-          type="text"
-          onSubmit={(e) => {
-            /* TODO */
-          }}
-          onChange={(e) => setPoulName(e.target.value)}
-          value={poulName}
+  console.log("loading this...", view);
+
+  switch (view) {
+    case "manageMatches":
+      return (
+        <ManageMatchesEditScreen
+          poulName={poulName}
+          setPoulName={setPoulName}
+          changeView={(newViewName) => setView(newViewName)}
         />
-        <button onClick={() => Router.push(Router.route + "/manageMatches")}>
-          Manage Matches
-        </button>
-        <button onClick={() => Router.push(Router.route + "/manageUsers")}>
-          Manage Users
-        </button>
-        <button>Save</button>
-      </div>
-    </div>
-  );
+      );
+    case "manageUsers":
+      return (
+        <ManageUsersEditScreen
+          poulName={poulName}
+          setPoulName={setPoulName}
+          changeView={(newViewName) => setView(newViewName)}
+        />
+      );
+    default:
+      return (
+        <DefaultEditScreen
+          poulName={poulName}
+          setPoulName={setPoulName}
+          changeView={(newViewName) => setView(newViewName)}
+        />
+      );
+  }
 }
