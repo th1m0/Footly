@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import prismaAdapter from "../../../lib/database/prismaAdapter";
 import prisma from "../../../lib/database/prismadb";
 
 export default NextAuth({

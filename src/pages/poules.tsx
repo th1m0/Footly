@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Router from "next/router";
 
 type Props = {};
 
@@ -10,7 +11,9 @@ export default function Poules({}: Props) {
       <h1>Poules</h1>
 
       <div>
-        <button>Create a Poul</button>
+        <button onClick={() => Router.push("/poule/create")}>
+          Create a Poul
+        </button>
       </div>
       <div>
         <input

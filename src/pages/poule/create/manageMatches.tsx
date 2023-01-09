@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import Router from "next/router";
 
-type Props = { poulName: string };
+type Props = { poulName: string; changeView: (viewName: string) => void };
 
-export default function ManageMatches({ poulName: _poulName }: Props) {
+export default function ManageMatches({
+  poulName: _poulName,
+  changeView,
+}: Props) {
   const [poulName, setPoulName] = useState<string>(_poulName ?? "");
 
   return (
@@ -18,8 +22,13 @@ export default function ManageMatches({ poulName: _poulName }: Props) {
           onChange={(e) => setPoulName(e.target.value)}
           value={poulName}
         />
-        <button onClick={() => {}}>Manage Matches</button>
-        <button onClick={() => {}}>Manage Users</button>
+        <button
+          onClick={() => {
+            changeView("manageUsers");
+          }}
+        >
+          Manage Users
+        </button>
       </div>
     </div>
   );

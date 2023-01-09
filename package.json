@@ -6,16 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:push": "dotenv -e .env.local pnpm exec prisma db push"
+  },
+  "prisma": {
+    "schema": "src/lib/database/schema.prisma"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.0.2",
-    "@radix-ui/react-dropdown-menu": "^2.0.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.0",
     "@prisma/client": "^4.7.1",
+    "@radix-ui/react-dialog": "^1.0.2",
+    "@radix-ui/react-dropdown-menu": "^2.0.1",
     "@types/node": "18.11.10",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
@@ -30,7 +34,9 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
+    "dotenv-cli": "^6.0.0",
     "postcss": "^8.4.19",
+    "prisma": "^4.8.1",
     "tailwindcss": "^3.2.4"
   }
 }

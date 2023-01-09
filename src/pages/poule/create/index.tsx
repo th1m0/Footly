@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Router from "next/router";
 
 type Props = {
   poulName: string;
@@ -19,8 +20,12 @@ export default function Create({ poulName: _poulName }: Props) {
           onChange={(e) => setPoulName(e.target.value)}
           value={poulName}
         />
-        <a href="./manageMatches">Manage Matches</a>
-        <a href="./manageUsers">Manage Users</a>
+        <button onClick={() => Router.push(Router.route + "/manageMatches")}>
+          Manage Matches
+        </button>
+        <button onClick={() => Router.push(Router.route + "/manageUsers")}>
+          Manage Users
+        </button>
         <button>Save</button>
       </div>
     </div>

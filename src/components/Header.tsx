@@ -6,56 +6,73 @@ import {
   Item as DropdownItem,
   Trigger as DropdownTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import GlobalStyles from "@mui/material/GlobalStyles";
 
 type Props = { score: number };
 
 function Header({ score }: Props) {
-  console.log("score ", score);
   return (
-    <header className="top-0 flex items-start justify-between max-w-7xl mx-auto z-20 ml-5 xl:items-center">
-      {/* Left */}
-      <div className="">
-        <h1
-          className="text-5xl"
-          onClick={() => {
-            /* go to home screen */
-          }}
-        >
-          Footly
-        </h1>
-      </div>
-      {/* Right */}
-      <div className="flex items-center justify-center mt-1">
-        <button className="p-2 border-2 border-[#B2B2B2] m-2 w-[150px] text-3xl rounded-lg">
-          Poules
-        </button>
+    <React.Fragment>
+      <GlobalStyles
+        styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
+      />
+      <CssBaseline />
+      <AppBar
+        position="static"
+        color="default"
+        elevation={0}
+        sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+      >
+        <Toolbar sx={{ flexWrap: "wrap" }}>
+          <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+            Footly
+          </Typography>
+          <nav>
+            <Link
+              variant="button"
+              color="text.primary"
+              href="#"
+              sx={{ my: 1, mx: 1.5 }}
+            >
+              Poules
+            </Link>
 
-        <DropdownRoot>
-          <DropdownTrigger
-            asChild
-            onFocus={(e) => e.preventDefault()}
-            className="focus:border-none"
-          >
-            <button className="p-2 w-[150px] border-2 border-[#B2B2B2] m-2 text-3xl rounded-lg">
-              Account
-            </button>
-          </DropdownTrigger>
-          <DropdownPortal onFocus={(e) => e.preventDefault()}>
-            <DropdownContent className="w-[150px] xl:w-[200px] mt-2 text-center border-2 border-[#B2B2B2] bg-[#EAEAEA] rounded-lg">
-              <DropdownItem
-                className="hover:border-none"
-                onTouchMove={(e) => e.preventDefault()}
+            <DropdownRoot>
+              <DropdownTrigger
+                asChild
+                onFocus={(e) => e.preventDefault()}
+                className="focus:border-none"
               >
-                <p className="text-lg">Score: {score}</p>
-              </DropdownItem>
-              <DropdownItem className="text-lg">
-                <button onClick={() => {}}>Login</button>
-              </DropdownItem>
-            </DropdownContent>
-          </DropdownPortal>
-        </DropdownRoot>
-      </div>
-    </header>
+                <Link
+                  variant="button"
+                  color="text.primary"
+                  href="#"
+                  sx={{ my: 1, mx: 1.5 }}
+                >
+                  Account
+                  {/* TODO: DROP DOWN. */}
+                </Link>
+              </DropdownTrigger>
+              <DropdownPortal onFocus={(e) => e.preventDefault()}>
+                <DropdownContent>
+                  <DropdownItem onTouchMove={(e) => e.preventDefault()}>
+                    <p>Score: {score}</p>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <button onClick={() => {}}>Login</button>
+                  </DropdownItem>
+                </DropdownContent>
+              </DropdownPortal>
+            </DropdownRoot>
+          </nav>
+        </Toolbar>
+      </AppBar>
+    </React.Fragment>
   );
 }
 
