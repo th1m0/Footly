@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../lib/database/prismadb";
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
   // adapter: prismaAdapter(prisma),
   session: {
     strategy: "jwt",
@@ -96,4 +96,6 @@ export default NextAuth({
       return session;
     },
   },
-});
+};
+
+export default NextAuth(authOptions);

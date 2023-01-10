@@ -1,5 +1,12 @@
 import BaseManager from "./BaseManager";
 import axios from "axios";
+import {
+  League,
+  LeagueCurrentStateType,
+  LeagueResponse,
+  LeagueStanding,
+  LeagueType,
+} from "footballApi";
 
 export default class LeagueManager extends BaseManager {
   constructor(apiToken: string, apiHost: string) {
@@ -15,18 +22,19 @@ export default class LeagueManager extends BaseManager {
     teamId: team,
     leagueType: type,
     leagueCurrentState: current,
-    searchLeagueCountry: search,
+    search,
   }: {
     leagueId?: string;
     leagueName?: string;
     leagueCountry?: string;
     leagueAlpha2Code?: string;
-    leagueSeason: string;
+    leagueSeason?: string;
     teamId?: string;
-    leagueType?: "league" | "cup";
-    leagueCurrentState?: "true" | "false";
-    searchLeagueCountry?: string;
+    leagueType?: LeagueType;
+    leagueCurrentState?: LeagueCurrentStateType;
+    search?: string;
   }) {
+    console.log("making request...");
     try {
       const { data, status } = await axios.get(this.buildURL("leagues"), {
         params: {
@@ -46,8 +54,9 @@ export default class LeagueManager extends BaseManager {
         },
       });
       if (status != 200) return null;
-      else return data;
+      else return data as LeagueResponse;
     } catch (error) {
+      console.error(error);
       return null;
     }
   }
@@ -69,7 +78,7 @@ export default class LeagueManager extends BaseManager {
         },
       });
       if (status != 200) return null;
-      else return data;
+      else return data as LeagueStanding;
     } catch (error) {
       return null;
     }

@@ -40,3 +40,12 @@ export default function Create({ poulName: _poulName }: Props) {
       );
   }
 }
+
+// export async function getStaticProps() {
+//   return {
+//     props: {
+//       ,
+//     },
+//     revalidate: 10,
+//   };
+// }

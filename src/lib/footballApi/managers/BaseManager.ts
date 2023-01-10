@@ -11,7 +11,7 @@ export default abstract class BaseManager {
   }
 
   buildURL(url: string) {
-    return this.baseURL + (url.startsWith("/") ? "/" + url : url);
+    return this.baseURL + (!url.startsWith("/") ? "/" + url : url);
   }
 
   getYmdString(date: Date) {

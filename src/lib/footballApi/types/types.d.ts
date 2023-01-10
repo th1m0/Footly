@@ -44,6 +44,10 @@ module "footballApi" {
 
   declare type FixtureEventType = "Goal" | "Card" | "Subst" | "Var";
 
+  declare type LeagueType = "league" | "cup";
+
+  declare type LeagueCurrentStateType = "true" | "false";
+
   declare interface FixturesOptions {
     fixtureId?: string;
     date: Date;
@@ -99,7 +103,7 @@ module "footballApi" {
     };
   }
 
-  declare interface League {
+  declare interface FixtureLeague {
     id: number;
     name: string;
     country: string;
@@ -135,7 +139,7 @@ module "footballApi" {
   declare interface FixturesResponse extends BaseResponse {
     response: {
       fixture: Fixture;
-      league: League;
+      league: FixtureLeague;
       teams: FixtureTeams;
       goals: FixtureGoals;
       score: FixtureScore;
@@ -247,7 +251,7 @@ module "footballApi" {
 
   declare interface TeamStatisticsResponse extends BaseResponse {
     response: {
-      league: League;
+      league: FixtureLeague;
       team: Team;
       form: string | null;
       fixtures: TeamFixtures;
@@ -300,11 +304,108 @@ module "footballApi" {
     response: number[];
   }
 
+  declare interface Country {
+    name: string;
+    code: string | null;
+    flag: string | null;
+  }
+
   declare interface TeamCountriesInformationResponse extends BaseResponse {
+    response: Country[];
+  }
+
+  declare interface League {
+    id: number;
+    name: string;
+    type: LeagueType;
+    logo: string;
+  }
+
+  declare interface CountrySeason {
+    year: number;
+    start: string;
+    end: string;
+    current: boolean;
+    coverage: Coverage;
+  }
+
+  declare interface Coverage {
+    fixture: {
+      events: boolean;
+      lineups: boolean;
+      statistics_fixtures: boolean;
+      statistics_players: boolean;
+    };
+    standings: boolean;
+    players: boolean;
+    top_scorers: boolean;
+    top_assists: boolean;
+    top_cards: boolean;
+    injuries: boolean;
+    predictions: boolean;
+    odds: boolean;
+  }
+
+  declare interface LeagueResponse extends BaseResponse {
     response: {
-      name: string;
-      code: string | null;
-      flag: string | null;
+      league: League;
+      country: Country[];
+      season: CountrySeason;
     }[];
+  }
+
+  declare interface TeamStanding {
+    rank: number;
+    team: Team;
+    points: number;
+    goalsDiff: number;
+    group: string;
+    form: string;
+    status: string;
+    description: string;
+    all: LeagueStandingStatistic;
+    home: LeagueStandingStatistic;
+    away: LeagueStandingStatistic;
+    update: string;
+  }
+
+  declare interface LeagueStandingStatistic {
+    played: number;
+    win: number;
+    draw: number;
+    lose: number;
+    goals: {
+      for: number;
+      against: number;
+    };
+  }
+
+  declare interface LeagueStanding extends BaseResponse {
+    response: {
+      league: FixtureLeague;
+      standings: TeamStanding[][];
+    };
+  }
+
+  declare interface Player {
+    id: number | null;
+    name: string | null;
+  }
+
+  declare interface FixtureEvent {
+    time: {
+      elapsed: number;
+      extra: any | null; //TODO
+    };
+    team: Team;
+    player: Player;
+    assist: Player;
+    Type: FixtureEventType;
+    detail: string;
+    comments: string | null;
+  }
+
+  declare interface FixtureEventResponse extends BaseResponse {
+    response: {};
   }
 }
