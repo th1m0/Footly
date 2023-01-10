@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Router from "next/router";
 import DefaultEditScreen from "../../../components/poul/edit/Default";
 import ManageMatchesEditScreen from "../../../components/poul/edit/ManageMatches";
 import ManageUsersEditScreen from "../../../components/poul/edit/ManageUsers";
