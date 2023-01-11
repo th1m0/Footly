@@ -3,7 +3,7 @@ module "footballApi" {
 This is a TypeScript module that defines various types and interfaces used by a football API.
 
 The module starts by defining several types that represent different states and types of fixtures, as well as different types of leagues and events. These include:
-- `FixtureTypeShort`: a string that represents the short form of the fixture type, such as "FT" for "Finished"
+- `FixtureTypeShort`: a string that represents the short form of the fixture type, such as "FT" for "Match Finished"
 - `FixtureTypeLong`: a string that represents the long form of the fixture type, such as "Match Finished"
 - `FixtureEventType`: a string that represents the type of event that occurred during a fixture, such as "Goal" or "Card"
 - `LeagueType`: a string that represents the type of league, such as "league" or "cup"

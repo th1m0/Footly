@@ -1,11 +1,6 @@
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import footballApi from "../lib/footballApi/FootballApi";
 import { useState } from "react";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { Competition } from "../components/home/Competitions";
 import { Matches } from "../components/home/Matches";
 
@@ -32,7 +27,11 @@ const Home = ({ matches, competitions }: Props) => {
         />
       </Grid>
       <Grid item xs={6}>
-        <Matches matches={matches} selectedCompetition={selectedCompetition} />
+        <Matches
+          matches={matches}
+          selectedCompetition={selectedCompetition}
+          className="h-64 overflow-y-scroll"
+        />
       </Grid>
     </Grid>
   );
