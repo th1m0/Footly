@@ -1,4 +1,29 @@
 module "footballApi" {
+  /**
+This is a TypeScript module that defines various types and interfaces used by a football API.
+
+The module starts by defining several types that represent different states and types of fixtures, as well as different types of leagues and events. These include:
+- `FixtureTypeShort`: a string that represents the short form of the fixture type, such as "FT" for "Finished"
+- `FixtureTypeLong`: a string that represents the long form of the fixture type, such as "Match Finished"
+- `FixtureEventType`: a string that represents the type of event that occurred during a fixture, such as "Goal" or "Card"
+- `LeagueType`: a string that represents the type of league, such as "league" or "cup"
+- `LeagueCurrentStateType`: a string that represents whether the league is currently active or not, "true" or "false"
+
+It also defines several interfaces that are used to provide options for API requests and to represent the response data. These include:
+- `FixturesOptions`: an interface that defines options that can be passed to an API request to retrieve fixtures, such as a specific date or league ID
+- `FixturesEventOptions`: an interface that defines options that can be passed to an API request to retrieve events that occurred during a fixture, such as a specific team or player ID
+- `BaseResponse`: an interface that defines the basic structure of an API response, including information about the request and the number of results returned
+- `Fixture`: an interface that represents data about a fixture, including details about the date, venue, and status
+- `FixtureLeague`: an interface that represents data about the league associated with a fixture, including its name, country, and season
+- `FixtureTeams`: an interface that represents the teams involved in a fixture, including data about each team's record and whether it is the home or away team
+- `Team`: an interface that represents data about a team, including its ID, name, and logo
+- `FixtureGoals`: an interface that represents the number of goals scored by each team in a fixture
+- `FixtureScore`: an interface that represents the score of a fixture at different stages of the match, such as halftime and fulltime
+- `FixturesResponse`: an interface that represents the full response data returned by the API when requesting fixtures, including the fixture, league, teams, and score information.
+- `TeamStatistic`: an interface that represents a statistics of a team 
+- `TeamFixtures`: an interface that represents all the fixtures of a team with different kind of statistics like played games, wins, losses, draws etc.
+   */
+
   //Option Types
   declare type FixtureTypeShort =
     | "TBD"
@@ -50,7 +75,7 @@ module "footballApi" {
 
   declare interface FixturesOptions {
     fixtureId?: string;
-    date: Date;
+    date?: Date;
     leagueId?: string;
     season?: string;
     teamId?: string;
@@ -58,8 +83,8 @@ module "footballApi" {
     round?: string;
     timezone?: string;
     status?: FixtureTypeShort;
-    venue: string;
-    fixtureIds: string[];
+    venue?: string;
+    fixtureIds?: string[];
   }
 
   declare interface FixturesEventOptions {

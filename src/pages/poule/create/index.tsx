@@ -41,11 +41,13 @@ export default function Create({ poulName: _poulName }: Props) {
   }
 }
 
-// export async function getStaticProps() {
-//   return {
-//     props: {
-//       ,
-//     },
-//     revalidate: 10,
-//   };
-// }
+export async function getStaticProps() {
+  //Get all competitions from the api
+  //query clubs that match the name of what was entered with the competition that was entered
+  //only query clubs after the competition has been filled in
+
+  return {
+    props: {},
+    revalidate: 10,
+  };
+}

@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import Router from "next/router";
 import axios from "axios";
 import { LeagueResponse } from "footballApi";
+import { useEffect, useState } from "react";
 
 type Props = {
   poulName: string;
@@ -15,78 +14,68 @@ export default function ManageMatches({
   setPoulName,
 }: Props) {
   const [team, setTeam] = useState<string>();
-  const [teamLastLetterAdded, setTeamLastLetterAdded] = useState<number>(-1);
   const [competition, setCompetition] = useState<string>("");
-  const [competitionLastLetterAdded, setCompetitionLastLetterAdded] =
-    useState<number>(-1);
   const [competitionsFound, setCompetitionsFound] = useState<
     { id: number; name: string }[]
   >([]);
+  const [lastCompetitionSearch, setLastCompetitionSearch] =
+    useState<number>(-1);
 
-  const onCompetitionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setCompetition(value);
-    setCompetitionLastLetterAdded(Date.now());
-    console.log("???");
-    setTimeout(async () => {
-      console.log(
-        "this",
-        value.length,
-        new Date().getTime() - competitionLastLetterAdded
-      );
-      if (value.length >= 3) {
-        if (new Date().getTime() - competitionLastLetterAdded > 3000) {
-          //Search for competitions...
-          //api call
-          console.log("posting...");
-          try {
-            console.log("POSTING!!!!");
-            const { data, status } = await axios.post(
-              "/api/search/competition",
-              {
-                body: {
-                  competition,
-                },
-              }
-            );
-            if (status != 200) return; //TODO handle error...
-            else {
-              console.log("resData", data);
-
-              setCompetitionsFound(
-                (data.data as LeagueResponse).response.map((res) => {
-                  return { id: res.league.id, name: res.league.name };
-                })
-              );
-            }
-          } catch (error) {
-            console.error(error);
-          }
+  useEffect(() => {
+    const searchCompetitions = async () => {
+      setLastCompetitionSearch(Date.now());
+      console.log("requesting...");
+      try {
+        const { data, status } = await axios.post("/api/search/competition", {
+          body: { competition },
+        });
+        if (status !== 200) {
+          return; //TODO handle error
         }
+        console.log("data", data);
+        setCompetitionsFound(
+          data.data.response.map((res: any) => {
+            return { id: res.league.id, name: res.league.name };
+          })
+        );
+      } catch (error) {
+        console.error(error);
       }
-    }, 3000);
-  };
+    };
+
+    const debouncedSearch = debounce(searchCompetitions, 3000);
+    if (competition.length >= 3) {
+      debouncedSearch();
+    }
+  }, [competition]);
+
+  function debounce(func: any, delay: number) {
+    let inDebounce: NodeJS.Timeout;
+    return function () {
+      // @ts-ignore
+      console.log(this);
+      // @ts-ignore
+      const context = this;
+      const args: IArguments = arguments;
+      clearTimeout(inDebounce);
+      inDebounce = setTimeout(() => func.apply(context, args), delay);
+    };
+  }
 
   return (
     <div>
-      {/* Title */}
       <div>
         <h1>Poul - Manage Matches</h1>
       </div>
-      {/* Nav Div */}
       <div>
         <input
           type="text"
-          onSubmit={(e) => {
-            /* TODO */
-          }}
+          onSubmit={(e) => {}}
           onChange={(e) => setPoulName(e.target.value)}
           value={poulName}
         />
         <button onClick={() => changeView("manageUsers")}>Manage Users</button>
       </div>
-      data
-      {/* Add a Match div */}
       <div>
         <h3>Add a Match</h3>
         <input
@@ -101,16 +90,14 @@ export default function ManageMatches({
           placeholder={"Competition *"}
           required
           value={competition}
-          onChange={(e) => onCompetitionChange(e)}
+          onChange={(e) => setCompetition(e.target.value)}
         />
-
         <datalist id="competition">
-          <option key={123456} value="Eredivisie"></option>
-          {competitionsFound.map((comp) => {
+          <option key={123} value="Eredivisie"></option>
+          {competitionsFound.map((comp: any) => {
             return <option key={comp.id} value={comp.name} />;
           })}
         </datalist>
-
         <button
           onClick={() => {
             //Search for matches to add to the poul
@@ -121,7 +108,7 @@ export default function ManageMatches({
         </button>
       </div>
       {/* Matches div */}
-      <div></div>
+      {/* ... */}
     </div>
   );
 }
