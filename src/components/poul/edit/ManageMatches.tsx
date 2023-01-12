@@ -1,66 +1,26 @@
 import axios from "axios";
-import { LeagueResponse } from "footballApi";
+import { Fixture, League, LeagueResponse } from "footballApi";
 import { useEffect, useState } from "react";
+import footballApi from "../../../lib/footballApi/FootballApi";
 
 type Props = {
   poulName: string;
   changeView: (viewName: string) => void;
   setPoulName: (newPoulName: string) => void;
+  competitions: League[];
 };
 
 export default function ManageMatches({
   poulName,
   changeView,
   setPoulName,
+  competitions,
 }: Props) {
-  const [team, setTeam] = useState<string>();
+  const [team, setTeam] = useState<string | null>(null);
   const [competition, setCompetition] = useState<string>("");
-  const [competitionsFound, setCompetitionsFound] = useState<
-    { id: number; name: string }[]
-  >([]);
-  const [lastCompetitionSearch, setLastCompetitionSearch] =
-    useState<number>(-1);
-
-  useEffect(() => {
-    const searchCompetitions = async () => {
-      setLastCompetitionSearch(Date.now());
-      console.log("requesting...");
-      try {
-        const { data, status } = await axios.post("/api/search/competition", {
-          body: { competition },
-        });
-        if (status !== 200) {
-          return; //TODO handle error
-        }
-        console.log("data", data);
-        setCompetitionsFound(
-          data.data.response.map((res: any) => {
-            return { id: res.league.id, name: res.league.name };
-          })
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const debouncedSearch = debounce(searchCompetitions, 3000);
-    if (competition.length >= 3) {
-      debouncedSearch();
-    }
-  }, [competition]);
-
-  function debounce(func: any, delay: number) {
-    let inDebounce: NodeJS.Timeout;
-    return function () {
-      // @ts-ignore
-      console.log(this);
-      // @ts-ignore
-      const context = this;
-      const args: IArguments = arguments;
-      clearTimeout(inDebounce);
-      inDebounce = setTimeout(() => func.apply(context, args), delay);
-    };
-  }
+  const [searchedMatches, setSearchedMatches] = useState<Fixture[] | null>(
+    null
+  );
 
   return (
     <div>
@@ -81,27 +41,51 @@ export default function ManageMatches({
         <input
           type="text"
           placeholder={"Team"}
-          value={team}
+          value={team ?? undefined}
           onChange={(e) => setTeam(e.target.value)}
         />
         <input
-          id="competition"
           type="text"
           placeholder={"Competition *"}
           required
           value={competition}
           onChange={(e) => setCompetition(e.target.value)}
         />
-        <datalist id="competition">
-          <option key={123} value="Eredivisie"></option>
-          {competitionsFound.map((comp: any) => {
-            return <option key={comp.id} value={comp.name} />;
-          })}
-        </datalist>
+
         <button
-          onClick={() => {
+          onClick={async () => {
+            //TODO: make loading animation when doing requests...
             //Search for matches to add to the poul
             //Make api call with the following values and get the possible matches in return
+
+            console.log(
+              `Searching for competition=${competition} and team=${
+                team ?? "No Team."
+              }`
+            );
+
+            let teamId;
+            if (team) {
+              const teamData = await footballApi.teamsManager.getInformation({
+                search: team,
+              });
+              teamId = teamData?.response?.[0]?.team?.id;
+            }
+
+            const leagueId = competitions.find(
+              (c) => c.name == competition
+            )?.id;
+            if (!leagueId) {
+              //TODO: handle error message.
+              return;
+            }
+
+            const data = await footballApi.fixturesManager.get({
+              teamId: teamId?.toString(),
+              leagueId: leagueId.toString(),
+            });
+
+            if (data == null) setSearchedMatches([]);
           }}
         >
           Search Matches

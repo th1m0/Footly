@@ -41,7 +41,7 @@ export default class TeamsManager extends BaseManager {
     leagueId: league,
     season,
     countryName: country,
-    searchCountry: search,
+    search,
     teamCode: code,
   }: {
     teamId?: string;
@@ -49,7 +49,7 @@ export default class TeamsManager extends BaseManager {
     leagueId?: string;
     season?: string;
     countryName?: string;
-    searchCountry?: string;
+    search?: string;
     teamCode?: string;
   }) {
     try {

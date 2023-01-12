@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import DefaultEditScreen from "../../../components/poul/edit/Default";
 import ManageMatchesEditScreen from "../../../components/poul/edit/ManageMatches";
 import ManageUsersEditScreen from "../../../components/poul/edit/ManageUsers";
+import footballApi from "../../../lib/footballApi/FootballApi";
+import { League } from "footballApi";
 
 type Props = {
-  poulName: string;
+  competitions: League[];
 };
 
-export default function Create({ poulName: _poulName }: Props) {
-  const [poulName, setPoulName] = useState<string>(_poulName ?? "");
+export default function Create({ competitions }: Props) {
+  const [poulName, setPoulName] = useState<string>("");
   const [view, setView] = useState<string | null>(null);
-
-  console.log("loading this...", view);
-
   switch (view) {
     case "manageMatches":
       return (
@@ -20,6 +19,7 @@ export default function Create({ poulName: _poulName }: Props) {
           poulName={poulName}
           setPoulName={setPoulName}
           changeView={(newViewName) => setView(newViewName)}
+          competitions={competitions}
         />
       );
     case "manageUsers":
@@ -46,8 +46,12 @@ export async function getStaticProps() {
   //query clubs that match the name of what was entered with the competition that was entered
   //only query clubs after the competition has been filled in
 
-  return {
-    props: {},
-    revalidate: 10,
-  };
+  const data = await footballApi.leagueManager.get({});
+  if (data != null)
+    return {
+      props: {
+        competitions: data.response.map((res) => res.league),
+      },
+      revalidate: 24 * 60 * 60, // 1 day
+    };
 }

@@ -14,26 +14,30 @@ const Home = ({ matches, competitions }: Props) => {
     null
   );
   const handleChange = (event: any) => {
-    setSelectedCompetition(event.target.value);
+    console.log("The selected competition is now", event.currentTarget.value);
+    setSelectedCompetition(event.currentTarget.value);
   };
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={6}>
-        <Competition
-          competitions={competitions}
-          selectedCompetition={selectedCompetition}
-          handleChange={handleChange}
-        />
+    <div className="h-screen flex flex-col items-center justify-center overflow-hidden">
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <Competition
+            competitions={competitions}
+            selectedCompetition={selectedCompetition}
+            handleChange={handleChange}
+            className="h-64"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Matches
+            matches={matches}
+            selectedCompetition={selectedCompetition}
+            className="h-64 overflow-y-scroll"
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        <Matches
-          matches={matches}
-          selectedCompetition={selectedCompetition}
-          className="h-64 overflow-y-scroll"
-        />
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 

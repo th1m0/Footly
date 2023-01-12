@@ -12,6 +12,29 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import GlobalStyles from "@mui/material/GlobalStyles";
+import styled from "@emotion/styled";
+import Button from "@mui/material/Button";
+
+const StyledDropdownContent = styled(DropdownContent)`
+  background-color: white;
+  padding: 8px;
+  font-size: 0.8rem;
+
+  & > *:hover {
+    background-color: gray;
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: blue;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  &:hover {
+    background-color: darkblue;
+  }
+`;
 
 type Props = { score: number };
 
@@ -59,14 +82,14 @@ function Header({ score }: Props) {
                 </Link>
               </DropdownTrigger>
               <DropdownPortal onFocus={(e) => e.preventDefault()}>
-                <DropdownContent>
-                  <DropdownItem onTouchMove={(e) => e.preventDefault()}>
+                <StyledDropdownContent>
+                  <DropdownItem>
                     <p>Score: {score}</p>
                   </DropdownItem>
                   <DropdownItem>
-                    <button onClick={() => {}}>Login</button>
+                    <StyledButton onClick={() => {}}>Login</StyledButton>
                   </DropdownItem>
-                </DropdownContent>
+                </StyledDropdownContent>
               </DropdownPortal>
             </DropdownRoot>
           </nav>
